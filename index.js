@@ -43,6 +43,7 @@ async function run() {
         const ordersCollection = database.collection('orders');
         const blogsCollection = database.collection('blogs');
         const featuresCollection = database.collection('features');
+        const specialsCollection = database.collection('specials');
 
 
         /* -------------BLOGS COLLECTION------------ */
@@ -82,7 +83,20 @@ async function run() {
             res.json(feature);
         })
 
-
+        /* ---------------SPECIALS COLLECTION-------------------- */
+        // GET SPECIALS API
+        app.get('/specials', async (req, res) => {
+            const cursor = specialsCollection.find({});
+            const specials = await cursor.toArray();
+            res.send(specials);
+        })
+        // GET SINGLE SPECIAL API
+        app.get('/specials/details/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const special = await specialsCollection.findOne(query);
+            res.json(special);
+        })
 
         // GET MEN SERVICE API
         app.get('/mens', async (req, res) => {
