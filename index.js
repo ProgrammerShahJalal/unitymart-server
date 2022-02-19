@@ -42,7 +42,10 @@ async function run() {
         const reviewsCollection = database.collection('reviews');
         const ordersCollection = database.collection('orders');
         const blogsCollection = database.collection('blogs');
+        const featuresCollection = database.collection('features');
 
+
+        /* -------------BLOGS COLLECTION------------ */
         // GET BLOGS API
         app.get('/blogs', async (req, res) => {
             const cursor = blogsCollection.find({});
@@ -63,6 +66,23 @@ async function run() {
             const result = await blogsCollection.insertOne(blog);
             res.json(result);
         });
+
+        /* ---------------FEATURES COLLECTION-------------------- */
+        // GET FEATURES API
+        app.get('/features', async (req, res) => {
+            const cursor = featuresCollection.find({});
+            const features = await cursor.toArray();
+            res.send(features);
+        })
+        // GET SINGLE FEATURE API
+        app.get('/features/details/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const feature = await featuresCollection.findOne(query);
+            res.json(feature);
+        })
+
+
 
         // GET MEN SERVICE API
         app.get('/mens', async (req, res) => {
@@ -165,6 +185,12 @@ async function run() {
             const cursor = reviewsCollection.find({});
             const reviews = await cursor.toArray();
             res.send(reviews);
+        })
+        // GET USERS API
+        app.get('/users', async (req, res) => {
+            const cursor = usersCollection.find({});
+            const users = await cursor.toArray();
+            res.send(users);
         })
 
         // POST API / ADD REVIEW
