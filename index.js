@@ -75,7 +75,7 @@ app.post('/init', (req, res) => {
 
 app.post('/success', async (req, res) => {
     console.log(req.body)
-    res.status(200).json(req.body)
+    res.status(200).redirect(`https://unitymart-c522a.web.app/success`)
 })
 app.post('/fail', async (req, res) => {
     console.log(req.body)
