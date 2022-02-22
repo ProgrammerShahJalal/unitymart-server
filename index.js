@@ -23,7 +23,7 @@ app.get('/init', (req, res) => {
         total_amount: 100,
         currency: 'BDT',
         tran_id: 'REF123',
-        success_url: 'https://morning-inlet-49130.herokuapp.com/success',
+        success_url: 'https://morning-inlet-49130.herokuapp.com/success/success',
         fail_url: 'https://morning-inlet-49130.herokuapp.com/fail',
         cancel_url: 'https://morning-inlet-49130.herokuapp.com/cancel',
         ipn_url: 'https://morning-inlet-49130.herokuapp.com/ipn',
