@@ -5,6 +5,7 @@ const app = express();
 const cors = require('cors');
 const SSLCommerzPayment = require('sslcommerz');
 require('dotenv').config();
+const { v4: uuidv4 } = require('uuid');
 
 const port = process.env.PORT || 5000;
 
@@ -12,6 +13,7 @@ const port = process.env.PORT || 5000;
 // middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.tllgu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
