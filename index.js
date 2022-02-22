@@ -22,7 +22,7 @@ app.get('/init', (req, res) => {
         total_amount: 100,
         currency: 'EUR',
         tran_id: 'REF123',
-        success_url: 'https://morning-inlet-49130.herokuapp.com/success',
+        success_url: 'http://localhost:5000/success',
         fail_url: 'https://morning-inlet-49130.herokuapp.com/fail',
         cancel_url: 'https://morning-inlet-49130.herokuapp.com/cancel',
         ipn_url: 'http://yoursite.com/ipn',
@@ -62,7 +62,7 @@ app.get('/init', (req, res) => {
 })
 
 app.post('/success', async (req, res) => {
-    console.log(req.body);
+    console.log(req.body)
     res.status(200).json(req.body)
 })
 
@@ -149,6 +149,28 @@ async function run() {
             const query = { _id: ObjectId(id) }
             const special = await specialsCollection.findOne(query);
             res.json(special);
+        })
+
+        // GET SINGLE MEN API
+        app.get('/mens/details/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const men = await mensCollection.findOne(query);
+            res.json(men);
+        })
+        // GET SINGLE WOMEN API
+        app.get('/womens/details/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const women = await womensCollection.findOne(query);
+            res.json(women);
+        })
+        // GET SINGLE KID API
+        app.get('/kids/details/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const kid = await kidsCollection.findOne(query);
+            res.json(kid);
         })
 
         // GET MEN SERVICE API
