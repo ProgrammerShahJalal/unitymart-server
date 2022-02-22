@@ -169,7 +169,7 @@ async function run() {
             const special = await specialsCollection.findOne(query);
             res.json(special);
         })
-
+        const order = await ordersCollection.insertOne(data);
         // GET MEN SERVICE API
         app.get('/mens', async (req, res) => {
             const cursor = mensCollection.find({});
