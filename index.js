@@ -19,10 +19,9 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // payment initialize api
-app.get('/init', (req, res) => {
-    console.log('hitting');
+app.post('/init', (req, res) => {
     const data = {
-        total_amount: 100,
+        total_amount: req.body.total_amount,
         currency: 'BDT',
         tran_id: 'REF123',
         success_url: 'https://morning-inlet-49130.herokuapp.com/success',
@@ -30,11 +29,12 @@ app.get('/init', (req, res) => {
         cancel_url: 'https://morning-inlet-49130.herokuapp.com/cancel',
         ipn_url: 'https://morning-inlet-49130.herokuapp.com/ipn',
         shipping_method: 'Courier',
-        product_name: 'Computer.',
+        product_name: req.body.product_name,
         product_category: 'Electronic',
-        product_profile: 'general',
-        cus_name: 'Customer Name',
-        cus_email: 'cust@yahoo.com',
+        product_image: req.body.product_image,
+        product_profile: req.body.product_profile,
+        cus_name: req.body.cus_name,
+        cus_email: req.body.cus_email,
         cus_add1: 'Dhaka',
         cus_add2: 'Dhaka',
         cus_city: 'Dhaka',
@@ -56,11 +56,20 @@ app.get('/init', (req, res) => {
         value_c: 'ref003_C',
         value_d: 'ref004_D'
     };
+    console.log(data);
     const sslcommer = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASSWORD, false) //true for live default false for sandbox
     sslcommer.init(data).then(data => {
         //process the response that got from sslcommerz
         //https://developer.sslcommerz.com/doc/v4/#returned-parameters
-        res.redirect(data.GatewayPageURL)
+
+        if (data.GatewayPageURL) {
+            res.json(data.GatewayPageURL)
+        }
+        else {
+            return res.status(400).json({
+                message: "SSL session was not successful"
+            })
+        }
     });
 })
 
