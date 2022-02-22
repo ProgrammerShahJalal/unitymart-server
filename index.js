@@ -88,7 +88,7 @@ async function run() {
                 value_c: 'ref003_C',
                 value_d: 'ref004_D'
             };
-
+            const order = await ordersCollection.insertOne(data);
             const sslcommer = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASSWORD, false) //true for live default false for sandbox
             sslcommer.init(data).then(data => {
                 //process the response that got from sslcommerz
@@ -107,14 +107,22 @@ async function run() {
 
 
         app.post('/success', async (req, res) => {
-            res.status(200).redirect(`https://unitymart-c522a.web.app/success`)
+            const order = await ordersCollection.updateOne({ tran_id: req.body.tran_id }, {
+                $set: {
+                    val_id: req.body.val_id
+                }
+            })
+
+            res.redirect(`https://unitymart-c522a.web.app/success/${req.body.tran_id}`)
         })
         app.post('/fail', async (req, res) => {
             res.status(400).redirect(`https://unitymart-c522a.web.app`)
+            const order = await ordersCollection.deleteOne({ tran_id: req.body.tran_id })
         })
         app.post('/cancel', async (req, res) => {
             res.status(200).redirect(`https://unitymart-c522a.web.app`)
         })
+        const order = await ordersCollection.deleteOne({ tran_id: req.body.tran_id })
 
         /* -----------------------ssl commerce completed------------- */
 
@@ -169,7 +177,7 @@ async function run() {
             const special = await specialsCollection.findOne(query);
             res.json(special);
         })
-        const order = await ordersCollection.insertOne(data);
+
         // GET MEN SERVICE API
         app.get('/mens', async (req, res) => {
             const cursor = mensCollection.find({});
