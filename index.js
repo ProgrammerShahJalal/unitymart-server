@@ -174,6 +174,7 @@ async function run() {
         const blogsCollection = database.collection('blogs');
         const featuresCollection = database.collection('features');
         const specialsCollection = database.collection('specials');
+        const productsCollection = database.collection('products');
 
 
         /* -------------BLOGS COLLECTION------------ */
@@ -227,7 +228,21 @@ async function run() {
             const special = await specialsCollection.findOne(query);
             res.json(special);
         })
-
+        /* ---------------ALL PRODUCTS COLLECTION-------------------- */
+        // GET PRODUCTS API
+        app.get('/products', async (req, res) => {
+            const cursor = productsCollection.find({});
+            const products = await cursor.toArray();
+            res.send(products);
+        })
+        // GET SINGLE PRODUCT API
+        app.get('/products/details/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const product = await productsCollection.findOne(query);
+            res.json(product);
+        })
+        /* =========================General Products==================== */
         // GET MEN SERVICE API
         app.get('/mens', async (req, res) => {
             const cursor = mensCollection.find({});
