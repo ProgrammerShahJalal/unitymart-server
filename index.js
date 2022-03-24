@@ -170,6 +170,7 @@ async function run() {
         const kidsCollection = database.collection('kids');
         const usersCollection = database.collection('users');
         const reviewsCollection = database.collection('reviews');
+        const blogReviewsCollection = database.collection('blogReviews');
         const ordersCollection = database.collection('orders');
         const blogsCollection = database.collection('blogs');
         const featuresCollection = database.collection('features');
@@ -345,6 +346,21 @@ async function run() {
             const reviews = await cursor.toArray();
             res.send(reviews);
         })
+
+        /* GET BLOG REVIEW */
+        app.get('/blogReviews', async (req, res) => {
+            const cursor = blogReviewsCollection.find({});
+            const blogReviews = await cursor.toArray();
+            res.send(blogReviews);
+        })
+        // ADD BLOG REVIEW
+        app.post('/blogReviews', async (req, res) => {
+            const blogReview = req.body;
+            const result = await blogReviewsCollection.insertOne(blogReview);
+            res.json(result);
+        });
+
+
         // GET USERS API
         app.get('/users', async (req, res) => {
             const cursor = usersCollection.find({});
